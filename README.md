@@ -11,7 +11,7 @@ expat-2.1.0/conftools/config.sub
 ```
 uname -a
 Linux centos7 4.14.0-115.el7a.0.1.aarch64 #1 SMP Sun Nov 25 20:54:21 UTC 2018 aarch64 aarch64 aarch64 GNU/Linux
-```	  ·
+```
 
 ## rtems verion
 
