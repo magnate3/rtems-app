@@ -20,6 +20,12 @@ Linux centos7 4.14.0-115.el7a.0.1.aarch64 #1 SMP Sun Nov 25 20:54:21 UTC 2018 aa
 ## though rtems-source-builder to build rtems-gcc objump gdb
 
 ```
+[root@centos7 rtems]# ../source-builder/sb-set-builder --list-bsets | grep aarch
+    6/rtems-aarch64.bset
+    7/rtems-aarch64.bset
+```
+
+```
 ../source-builder/sb-set-builder          --log=build-log.txt          --prefix=$HOME/development/rtems/compiler/6  6/rtems-aarch64
 ```
 
