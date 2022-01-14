@@ -12,7 +12,7 @@ rtems-source-builder/rtems/sources/expat-2.1.0/conftools/config.sub
  359         | avr-* | avr32-* \
  
 ```
-
+**aarch64**
 
 ```
 [root@centos7 expat-2.1.0]# pwd
