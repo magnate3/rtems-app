@@ -32,10 +32,100 @@ build  config.ini  Doxyfile  gccdeps.pyc  LICENSE  LICENSE.BSD-3-Clause  LICENSE
 ```
 
 ```
-(1)./waf bsp_defaults --rtems-bsps=aarch64/a53_lp64_qemu   > config.ini
+(1)./waf distclean  and ./waf bsp_defaults --rtems-bsps=aarch64/a53_lp64_qemu   > config.ini
 (2)./waf configure --prefix=$HOME/development/rtems/compiler/6
 (3)./waf 
 (4)./waf install
+```
+
+##   hello_world_c
+
+```
+ export PATH=$HOME/development/rtems/compiler/6/bin:$PATH
+ export RTEMS_MAKEFILE_PATH=/root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu
+```
+
+```
+ make
+aarch64-rtems6-gcc --pipe  -Wall  -O2 -g -fdata-sections -ffunction-sections  -I/root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib/include -mcpu=cortex-a53     -B/root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib -qrtems -Wl,--gc-sections   -mcpu=cortex-a53   -o o-optimize/hello.exe  o-optimize/test.o       
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: Relocations in generic ELF (EM: 243)
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: o-optimize/test.o: error adding symbols: file in wrong format
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:23: o-optimize/hello.exe] Error 1
+```
+make clean
+
+```
+[root@centos7 hello_world_c]# make clean
+rm -f a.out core mon.out gmon.out
+rm -f -r 
+rm -f -r  a.out *.o *.BAK Depends-o-optimize.tmp
+rm -f -r o-optimize o-debug
+[root@centos7 hello_world_c]# make
+test -d o-optimize || mkdir o-optimize
+aarch64-rtems6-gcc --pipe  -Wall  -O2 -g -fdata-sections -ffunction-sections  -I/root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib/include -mcpu=cortex-a53      -c   -o o-optimize/test.o test.c
+test.c: In function 'Init':
+test.c:75:3: warning: implicit declaration of function 'RTEMS_Malloc_Initialize' [-Wimplicit-function-declaration]
+   75 |   RTEMS_Malloc_Initialize( &area,  NULL );
+      |   ^~~~~~~~~~~~~~~~~~~~~~~
+test.c:79:3: warning: implicit declaration of function 'rtems_test_assert'; did you mean 'rtems_task_start'? [-Wimplicit-function-declaration]
+   79 |   rtems_test_assert( p == NULL );
+      |   ^~~~~~~~~~~~~~~~~
+      |   rtems_task_start
+aarch64-rtems6-gcc --pipe  -Wall  -O2 -g -fdata-sections -ffunction-sections  -I/root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib/include -mcpu=cortex-a53     -B/root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib -qrtems -Wl,--gc-sections   -mcpu=cortex-a53   -o o-optimize/hello.exe  o-optimize/test.o       
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: /root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib/start.o: in function `_el1_start':
+/root/development/rtems/kernel2/rtems/build/aarch64/a53_lp64_qemu/../../../bsps/aarch64/shared/start/start.S:317: undefined reference to `_ISR_Stack_size'
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: /root/development/rtems/kernel2/rtems/build/aarch64/a53_lp64_qemu/../../../bsps/aarch64/shared/start/start.S:317: undefined reference to `_ISR_Stack_area_begin'
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: /root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib/librtemscpu.a(isr.c.53.o): in function `_ISR_Handler_initialization':
+/root/development/rtems/kernel2/rtems/build/aarch64/a53_lp64_qemu/../../../cpukit/score/src/isr.c:46: undefined reference to `_ISR_Stack_area_begin'
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: /root/development/rtems/kernel2/rtems/build/aarch64/a53_lp64_qemu/../../../cpukit/score/src/isr.c:46: undefined reference to `_ISR_Stack_area_begin'
+/root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: /root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib/librtemscpu.a(isr.c.53.o): in function `_Addresses_Add_offset':
+```
+
+because not include  rtems/confdefs.h 
+```
+[root@centos7 hello_world_c]# vim test.c
+/*
+ *  Classic API Hello World
+ */
+
+#include <rtems.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+rtems_task Init(
+  rtems_task_argument ignored
+)
+{
+  printf( "\n\n*** HELLO WORLD TEST ***\n" );
+  printf( "Hello World\n" );
+  printf( "*** END OF HELLO WORLD TEST ***\n" );
+  exit( 0 );
+}
+
+/* configuration information */
+
+#include <bsp.h>
+
+/* NOTICE: the clock driver is explicitly disabled */
+#define CONFIGURE_APPLICATION_DOES_NOT_NEED_CLOCK_DRIVER
+#define CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER
+#define CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM
+
+#define CONFIGURE_RTEMS_INIT_TASKS_TABLE
+#define CONFIGURE_MAXIMUM_TASKS 1
+
+#define CONFIGURE_INIT
+//#include <rtems/confdefs.h>
+/* end of file */
 ```
 
 ##   error arch
