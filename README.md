@@ -90,7 +90,8 @@ aarch64-rtems6-gcc --pipe  -Wall  -O2 -g -fdata-sections -ffunction-sections  -I
 /root/development/rtems/compiler/6/lib/gcc/aarch64-rtems6/10.3.1/../../../../aarch64-rtems6/bin/ld: /root/development/rtems/compiler/6/aarch64-rtems6/a53_lp64_qemu/lib/librtemscpu.a(isr.c.53.o): in function `_Addresses_Add_offset':
 ```
 
-because not include  rtems/confdefs.h 
+**because not include  rtems/confdefs.h**
+
 ```
 [root@centos7 hello_world_c]# vim test.c
 /*
