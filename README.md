@@ -305,3 +305,56 @@ bsp_interrupt_facility_initialize () at ../../../bsps/shared/dev/irq/arm-gicv3.c
 Backtrace stopped: previous frame identical to this frame (corrupt stack?)
 (gdb) 
 ```
+
+##  rtems-libbsd
+
+### rtems-libbsd version
+
+```
+[root@centos7 rtems-libbsd-a64]# git branch
+  master
+* remotes/origin/5
+  remotes/origin/6-freebsd-12
+[root@centos7 rtems-libbsd-a64]# pwd
+/root/development/rtems_rv/rtems-libbsd-a64
+[root@centos7 rtems-libbsd-a64]# 
+
+
+```
+
+### rtems version
+
+```
+[root@centos7 rtems]# pwd
+/root/development/rtems/kernel2/rtems
+You have new mail in /var/spool/mail/root
+[root@centos7 rtems]# git branch --all
+  master
+* remotes/origin/5
+  remotes/origin/4.10
+  remotes/origin/4.11
+  remotes/origin/4.8
+  remotes/origin/4.9
+  remotes/origin/5
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+```
+
+
+
+```
+./waf configure --prefix=$HOME/development/rtems/compiler/6 --rtems-bsps=aarch64/a53_lp64_qemu   --buildset=buildset/default.ini
+```
+
+##  rtems-libbsd  xilinx_zynqmp_lp64_qemu
+
+###    kernel
+```
+ ./waf bsp_defaults --rtems-bsps=aarch64/xilinx_zynqmp_lp64_qemu   > config.ini
+```
+
+###    bsd
+
+```
+./waf configure --prefix=$HOME/development/rtems/compiler/6 --rtems-bsps=aarch64-rtems6/xilinx_zynqmp_lp64_qemu   --buildset=buildset/default.ini
+```
