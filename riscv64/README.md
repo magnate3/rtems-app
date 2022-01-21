@@ -114,4 +114,51 @@ executing thread ID: 0x08a010001
 executing thread name: UI1 
 ```
 
+## gdb
+
+```
+qemu-system-riscv64 -M virt -kernel low_ticker.exe -bios none -serial stdio -s -S
+```
+
+```
+[root@centos7 o-optimize]#  riscv-rtems6-gdb low_ticker.exe
+GNU gdb (GDB) 10.1.90.20210409-git
+Copyright (C) 2021 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "--host=aarch64-linux-gnu --target=riscv-rtems6".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from low_ticker.exe...
+(gdb) target remote:1234
+Remote debugging using :1234
+0x0000000000001000 in ?? ()
+(gdb) b riscv_clint_init
+Breakpoint 1 at 0x80000454: file ../../../bsps/riscv/riscv/irq/irq.c, line 123.
+(gdb) c
+Continuing.
+
+Breakpoint 1, 0x0000000080000454 in riscv_clint_init (fdt=<optimized out>)
+    at ../../../bsps/riscv/riscv/irq/irq.c:123
+123       node = fdt_node_offset_by_compatible(fdt, -1, "riscv,clint0");
+(gdb) bt
+#0  0x0000000080000454 in riscv_clint_init (fdt=<optimized out>) at ../../../bsps/riscv/riscv/irq/irq.c:123
+#1  bsp_interrupt_facility_initialize () at ../../../bsps/riscv/riscv/irq/irq.c:223
+#2  0x0000000080000ba0 in bsp_interrupt_initialize () at ../../../bsps/shared/irq/irq-generic.c:163
+#3  0x00000000800008d2 in bsp_start () at ../../../bsps/riscv/riscv/start/bspstart.c:206
+#4  0x0000000080002204 in rtems_initialize_executive () at ../../../cpukit/sapi/src/exinit.c:116
+#5  0x00000000800001cc in boot_card (cmdline=<optimized out>) at ../../../bsps/shared/start/bootcard.c:55
+#6  0x000000008000003e in bsp_section_start_begin () at ../../../bsps/riscv/shared/start/start.S:86
+Backtrace stopped: frame did not save the PC
+(gdb) 
+```
+
 
