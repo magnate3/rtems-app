@@ -241,3 +241,125 @@ Backtrace stopped: previous frame identical to this frame (corrupt stack?)
 1928     * @brief Create a new device
 (gdb) 
 ```
+
+## device_method_t
+
+```
+static device_method_t cgem_methods[] = {
+	/* Device interface */
+	DEVMETHOD(device_probe,		cgem_probe),
+	DEVMETHOD(device_attach,	cgem_attach),
+	DEVMETHOD(device_detach,	cgem_detach),
+
+	/* Bus interface */
+	DEVMETHOD(bus_child_detached,	cgem_child_detached),
+
+	/* MII interface */
+	DEVMETHOD(miibus_readreg,	cgem_miibus_readreg),
+	DEVMETHOD(miibus_writereg,	cgem_miibus_writereg),
+	DEVMETHOD(miibus_statchg,	cgem_miibus_statchg),
+	DEVMETHOD(miibus_linkchg,	cgem_miibus_linkchg),
+
+	DEVMETHOD_END
+};s
+```
+##  cgem_probe
+
+```
+(gdb) bt
+#0  cgem_probe (dev=0x50da10) at ../../freebsd/sys/dev/cadence/if_cgem.c:1958
+#1  0x001108a0 in DEVICE_PROBE (dev=0x50da10) at ../../rtemsbsd/include/rtems/bsd/local/device_if.h:115
+#2  _bsd_device_probe_child (dev=0x50d898, child=child@entry=0x50da10) at ../../freebsd/sys/kern/subr_bus.c:2190
+#3  0x00110ac8 in _bsd_device_probe (dev=dev@entry=0x50da10) at ../../freebsd/sys/kern/subr_bus.c:2922
+#4  0x00110c7e in _bsd_device_probe_and_attach (dev=0x50da10) at ../../freebsd/sys/kern/subr_bus.c:2946
+#5  _bsd_bus_generic_new_pass (dev=0x50d898) at ../../freebsd/sys/kern/subr_bus.c:4187
+#6  0x00110c6e in BUS_NEW_PASS (_dev=0x50d898) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:1046
+#7  _bsd_bus_generic_new_pass (dev=0x50b368) at ../../freebsd/sys/kern/subr_bus.c:4185
+#8  0x0010f95c in BUS_NEW_PASS (_dev=0x50b368) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:1046
+#9  _bsd_bus_set_pass (pass=2147483647) at ../../freebsd/sys/kern/subr_bus.c:994
+#10 0x00195ae4 in _bsd_mi_startup () at ../../freebsd/sys/kern/init_main.c:331
+#11 0x0017b396 in rtems_bsd_initialize () at ../../rtemsbsd/rtems/rtems-kernel-init.c:235
+#12 0x001047ca in Init (arg=<optimized out>) at ../../testsuite/include/rtems/bsd/test/default-network-init.h:239
+#13 0x001f95b4 in _Thread_Handler () at ../../../cpukit/score/src/threadhandler.c:145
+#14 0x001fa96a in _Thread_Start_multitasking () at ../../../cpukit/score/src/threadstartmultitasking.c:68
+#15 0x00000000 in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+(gdb) 
+```
+
+##
+```
+(gdb) c
+Continuing.
+
+Breakpoint 3, cgem_attach (dev=0x50da10) at ../../freebsd/sys/dev/cadence/if_cgem.c:1984
+1984            struct cgem_softc *sc = device_get_softc(dev);
+(gdb) bt
+#0  cgem_attach (dev=0x50da10) at ../../freebsd/sys/dev/cadence/if_cgem.c:1984
+#1  0x00110358 in DEVICE_ATTACH (dev=0x50da10) at ../../rtemsbsd/include/rtems/bsd/local/device_if.h:195
+#2  _bsd_device_attach (dev=dev@entry=0x50da10) at ../../freebsd/sys/kern/subr_bus.c:2998
+#3  0x00110c88 in _bsd_device_probe_and_attach (dev=0x50da10) at ../../freebsd/sys/kern/subr_bus.c:2953
+#4  _bsd_bus_generic_new_pass (dev=0x50d898) at ../../freebsd/sys/kern/subr_bus.c:4187
+#5  0x00110c6e in BUS_NEW_PASS (_dev=0x50d898) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:1046
+#6  _bsd_bus_generic_new_pass (dev=0x50b368) at ../../freebsd/sys/kern/subr_bus.c:4185
+#7  0x0010f95c in BUS_NEW_PASS (_dev=0x50b368) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:1046
+#8  _bsd_bus_set_pass (pass=2147483647) at ../../freebsd/sys/kern/subr_bus.c:994
+#9  0x00195ae4 in _bsd_mi_startup () at ../../freebsd/sys/kern/init_main.c:331
+#10 0x0017b396 in rtems_bsd_initialize () at ../../rtemsbsd/rtems/rtems-kernel-init.c:235
+#11 0x001047ca in Init (arg=<optimized out>) at ../../testsuite/include/rtems/bsd/test/default-network-init.h:239
+#12 0x001f95b4 in _Thread_Handler () at ../../../cpukit/score/src/threadhandler.c:145
+#13 0x001fa96a in _Thread_Start_multitasking () at ../../../cpukit/score/src/threadstartmultitasking.c:68
+#14 0x00000000 in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+(gdb) 
+```
+
+##  cgem_recv 
+
+```
+Breakpoint 1, cgem_recv (sc=0x50e500) at ../../freebsd/sys/dev/cadence/if_cgem.c:702
+702             if_t ifp = sc->ifp;
+(gdb) bt
+#0  cgem_recv (sc=0x50e500) at ../../freebsd/sys/dev/cadence/if_cgem.c:702
+#1  cgem_intr (arg=0x50e500) at ../../freebsd/sys/dev/cadence/if_cgem.c:1185
+#2  0x001e9ff8 in bsp_interrupt_server_task (arg=4676060) at ../../../bsps/shared/irq/irq-server.c:363
+#3  0x001f95b4 in _Thread_Handler () at ../../../cpukit/score/src/threadhandler.c:145
+#4  0x001f945e in _Thread_Do_dispatch (cpu_self=<optimized out>, level=<optimized out>) at ../../../cpukit/score/src/threaddispatch.c:309
+#5  0x00000000 in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+(gdb) 
+```
+
+## cgem_int-->rtems_interrupt_server_handler_install
+
+```
+(gdb) c
+Continuing.
+
+Breakpoint 2, rtems_interrupt_server_handler_install (server_index=server_index@entry=0, vector=vector@entry=79, info=0x50db10 "arasan_sdhci1", options=options@entry=0, handler=handler@entry=0x17d22d <arasan_sdhci_intr>, arg=arg@entry=0x513568)
+    at ../../../bsps/shared/irq/irq-server.c:385
+385       s = bsp_interrupt_server_get_context(server_index, &sc);
+(gdb) bt
+#0  rtems_interrupt_server_handler_install (server_index=server_index@entry=0, vector=vector@entry=79, info=0x50db10 "arasan_sdhci1", options=options@entry=0, handler=handler@entry=0x17d22d <arasan_sdhci_intr>, arg=arg@entry=0x513568)
+    at ../../../bsps/shared/irq/irq-server.c:385
+#1  0x0017bf60 in nexus_setup_intr (dev=<optimized out>, child=<optimized out>, res=0x513c48, flags=<optimized out>, filt=0x0, intr=0x17d22d <arasan_sdhci_intr>, arg=0x513568, cookiep=0x513574) at ../../rtemsbsd/rtems/rtems-kernel-nexus.c:335
+#2  0x00110102 in BUS_SETUP_INTR (_cookiep=0x513574, _arg=0x513568, _intr=0x17d22d <arasan_sdhci_intr>, _filter=0x0, _flags=514, _irq=0x513c48, _child=0x50daa8, _dev=0x50d898) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:553
+#3  _bsd_bus_setup_intr (dev=dev@entry=0x50daa8, r=0x513c48, flags=flags@entry=514, filter=filter@entry=0x0, handler=handler@entry=0x17d22d <arasan_sdhci_intr>, arg=arg@entry=0x513568, cookiep=cookiep@entry=0x513574)
+    at ../../freebsd/sys/kern/subr_bus.c:4799
+#4  0x0017d2d0 in arasan_sdhci_attach (dev=0x50daa8) at ../../rtemsbsd/sys/dev/sdhci/arasan_sdhci.c:258
+#5  0x00110358 in DEVICE_ATTACH (dev=0x50daa8) at ../../rtemsbsd/include/rtems/bsd/local/device_if.h:195
+#6  _bsd_device_attach (dev=dev@entry=0x50daa8) at ../../freebsd/sys/kern/subr_bus.c:2998
+#7  0x00110c88 in _bsd_device_probe_and_attach (dev=0x50daa8) at ../../freebsd/sys/kern/subr_bus.c:2953
+#8  _bsd_bus_generic_new_pass (dev=0x50d898) at ../../freebsd/sys/kern/subr_bus.c:4187
+#9  0x00110c6e in BUS_NEW_PASS (_dev=0x50d898) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:1046
+#10 _bsd_bus_generic_new_pass (dev=0x50b368) at ../../freebsd/sys/kern/subr_bus.c:4185
+#11 0x0010f95c in BUS_NEW_PASS (_dev=0x50b368) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:1046
+#12 _bsd_bus_set_pass (pass=2147483647) at ../../freebsd/sys/kern/subr_bus.c:994
+#13 0x00195ae4 in _bsd_mi_startup () at ../../freebsd/sys/kern/init_main.c:331
+#14 0x0017b396 in rtems_bsd_initialize () at ../../rtemsbsd/rtems/rtems-kernel-init.c:235
+#15 0x001047ca in Init (arg=<optimized out>) at ../../testsuite/include/rtems/bsd/test/default-network-init.h:239
+#16 0x001f95b4 in _Thread_Handler () at ../../../cpukit/score/src/threadhandler.c:145
+#17 0x001fa96a in _Thread_Start_multitasking () at ../../../cpukit/score/src/threadstartmultitasking.c:68
+#18 0x00000000 in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+```
