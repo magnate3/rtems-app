@@ -83,6 +83,12 @@ You have new mail in /var/spool/mail/root
 # run
 
 ```
+ qemu-system-arm  -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe -s -S
+ 
+ arm-rtems6-gdb  build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe
+```
+
+```
 [root@centos7 rtems-libbsd-a64]# qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe
 qemu-system-arm: warning: nic cadence_gem.1 has no peer
 
@@ -195,4 +201,43 @@ TLNT [/] # exit
 Shell exiting
 Connection closed by foreign host.
 [root@centos7 rtems]# 
+```
+
+# debug
+
+
+
+```
+(gdb) step
+_bsd_device_add_child (dev=dev@entry=0x50d898, name=0x228580 "cgem", unit=0) at ../../freebsd/sys/kern/subr_bus.c:1924
+1924            return (device_add_child_ordered(dev, 0, name, unit));
+(gdb) bt
+#0  _bsd_device_add_child (dev=dev@entry=0x50d898, name=0x228580 "cgem", unit=0) at ../../freebsd/sys/kern/subr_bus.c:1924
+#1  0x0017c12e in nexus_probe (dev=0x50d898) at ../../rtemsbsd/rtems/rtems-kernel-nexus.c:153
+#2  0x001108a0 in DEVICE_PROBE (dev=0x50d898) at ../../rtemsbsd/include/rtems/bsd/local/device_if.h:115
+#3  _bsd_device_probe_child (dev=0x50b368, child=child@entry=0x50d898) at ../../freebsd/sys/kern/subr_bus.c:2190
+#4  0x00110ac8 in _bsd_device_probe (dev=dev@entry=0x50d898) at ../../freebsd/sys/kern/subr_bus.c:2922
+#5  0x00110c7e in _bsd_device_probe_and_attach (dev=0x50d898) at ../../freebsd/sys/kern/subr_bus.c:2946
+#6  _bsd_bus_generic_new_pass (dev=0x50b368) at ../../freebsd/sys/kern/subr_bus.c:4187
+#7  0x0010f95c in BUS_NEW_PASS (_dev=0x50b368) at ../../rtemsbsd/include/rtems/bsd/local/bus_if.h:1046
+#8  _bsd_bus_set_pass (pass=2147483647) at ../../freebsd/sys/kern/subr_bus.c:994
+#9  0x00195ae4 in _bsd_mi_startup () at ../../freebsd/sys/kern/init_main.c:331
+#10 0x0017b396 in rtems_bsd_initialize () at ../../rtemsbsd/rtems/rtems-kernel-init.c:235
+#11 0x001047ca in Init (arg=<optimized out>) at ../../testsuite/include/rtems/bsd/test/default-network-init.h:239
+#12 0x001f95b4 in _Thread_Handler () at ../../../cpukit/score/src/threadhandler.c:145
+#13 0x001fa96a in _Thread_Start_multitasking () at ../../../cpukit/score/src/threadstartmultitasking.c:68
+#14 0x00000000 in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+(gdb) list
+1919     * @returns             the new device
+1920     */
+1921    device_t
+1922    device_add_child(device_t dev, const char *name, int unit)
+1923    {
+1924            return (device_add_child_ordered(dev, 0, name, unit));
+1925    }
+1926
+1927    /**
+1928     * @brief Create a new device
+(gdb) 
 ```
