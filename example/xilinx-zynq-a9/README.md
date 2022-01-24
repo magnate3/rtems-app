@@ -1,5 +1,4 @@
 
-
 # qemu
 
 ```
@@ -146,11 +145,12 @@ debug: cgem0: sending ARP announce (1 of 2), next in 2.0 seconds
 debug: cgem0: sending ARP announce (2 of 2)
 ```
 
-### set in outer host
+### settings in outer host
 
 (1) qemu
  
 ![image](https://github.com/magnate3/rtems-_app/blob/main/pic/gem.png)
+
 (2) host             
 ![image](https://github.com/magnate3/rtems-_app/blob/main/pic/network.png)
 
