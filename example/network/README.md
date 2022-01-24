@@ -44,7 +44,7 @@ config.ini
 (5)./waf configure -h
 (6)./waf configure   --prefix=$HOME/development/rtems_rv/compiler/6  --rtems-bsps=riscv/rv64imafdc_medany  --buildset=buildset/default.ini
 (7) ./waf
-(7) ./waf install
+(8) ./waf install
 ```  
 
 ###
@@ -62,6 +62,6 @@ Build failed
 RTEMS_NETWORKING = False
 ```
 
-## my host 
+
 
  
