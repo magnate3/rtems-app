@@ -82,11 +82,6 @@ You have new mail in /var/spool/mail/root
 
 # run
 
-```
- qemu-system-arm  -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe -s -S
- 
- arm-rtems6-gdb  build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe
-```
 
 ```
 [root@centos7 rtems-libbsd-a64]# qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe
@@ -206,6 +201,11 @@ Connection closed by foreign host.
 # debug
 
 
+```
+ qemu-system-arm  -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe -s -S
+ 
+ arm-rtems6-gdb  build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe
+```
 
 ```
 (gdb) step
