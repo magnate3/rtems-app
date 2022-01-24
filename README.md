@@ -310,6 +310,8 @@ Backtrace stopped: previous frame identical to this frame (corrupt stack?)
 
 ### rtems-libbsd version
 
+![image](https://github.com/magnate3/rtems-_app/blob/main/pic/bsd_in_aarch64.png)
+
 ```
 [root@centos7 rtems-libbsd-a64]# git branch
   master
