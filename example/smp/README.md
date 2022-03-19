@@ -85,8 +85,14 @@ arm/xilinx_zynq_a9_qemu
 ```
 
 ```
-./waf bsp_defaults --rtems-bsps=arm/realview_pbx_a9_qemu   > config.ini
-./waf configure --prefix=$HOME/development/rtems/compiler_arm/6
+ (1) ./waf bsp_defaults --rtems-bsps=arm/realview_pbx_a9_qemu   > config.ini
+ RTEMS_POSIX_API = True in config.ini
+ 
+ # Enable the Symmetric Multiprocessing (SMP) support
+RTEMS_SMP = True
+ (2) ./waf configure --prefix=$HOME/development/rtems/compiler_arm/6
+ (3)./waf 
+ (4)./waf install
 [root@centos7 rtems]# ls $HOME/development/rtems/compiler_arm/6/arm-rtems6/realview_pbx_a9_qemu 
 lib  make  Makefile.inc
 [root@centos7 rtems]# 
