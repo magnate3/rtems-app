@@ -58,6 +58,9 @@ You have new mail in /var/spool/mail/root
  (4)./waf install
 ```
 
+# export
+export PATH=$HOME/development/rtems/compiler_arm/6/bin:$PATH
+export RTEMS_MAKEFILE_PATH=$HOME/development/rtems/compiler_arm/6/arm-rtems6/xilinx_zynq_a9_qemu
 
 #  rtems-libbsd
 
