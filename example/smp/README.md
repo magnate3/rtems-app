@@ -105,4 +105,4 @@ qemu-system-arm  -no-reboot -net none -nographic -smp 4 -icount auto -M realview
 ```
 
 
-![image]https://github.com/magnate3/rtems-app/tree/main/example/smp/pic/smp.png)
+![image](https://github.com/magnate3/rtems-app/tree/main/example/smp/pic/smp.png)
