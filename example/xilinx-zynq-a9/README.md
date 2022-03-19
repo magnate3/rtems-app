@@ -83,6 +83,29 @@ You have new mail in /var/spool/mail/root
 # run
 
 
+
+## network config
+
+```
+[root@centos7 rtems-libbsd-a64]#  tunctl -p -t qtap -u $(whoami)
+Set 'qtap' persistent and owned by uid 0
+[root@centos7 rtems-libbsd-a64]# ip link set dev qtap up
+[root@centos7 rtems-libbsd-a64]#  ip addr add 169.254.1.1/16 dev qtap
+RTNETLINK answers: File exists
+[root@centos7 rtems-libbsd-a64]# ip a sh qtap
+21: qtap: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+    link/ether 36:76:9c:1c:e7:0f brd ff:ff:ff:ff:ff:ff
+    inet 169.254.1.1/16 scope global qtap
+       valid_lft forever preferred_lft forever
+    inet6 fe80::3476:9cff:fe1c:e70f/64 scope link 
+       valid_lft forever preferred_lft forever
+[root@centos7 rtems-libbsd-a64]#
+```
+
+
+
+## run
+
 ```
 [root@centos7 rtems-libbsd-a64]# qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe
 qemu-system-arm: warning: nic cadence_gem.1 has no peer
@@ -200,6 +223,9 @@ Connection closed by foreign host.
 
 # debug
 
+```
+export PATH=$HOME/development/rtems/compiler_arm/6/bin:$PATH
+```
 
 ```
  qemu-system-arm  -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/media01.exe -s -S
@@ -262,6 +288,28 @@ static device_method_t cgem_methods[] = {
 
 	DEVMETHOD_END
 };s
+
+static driver_t cgem_driver = {
+	"cgem",
+	cgem_methods,
+	sizeof(struct cgem_softc),
+};
+
+#ifndef __rtems__
+DRIVER_MODULE(cgem, simplebus, cgem_driver, cgem_devclass, NULL, NULL);
+#else /* __rtems__ */
+DRIVER_MODULE(cgem, nexus, cgem_driver, cgem_devclass, NULL, NULL);
+#endif /* __rtems__ */
+DRIVER_MODULE(miibus, cgem, miibus_driver, miibus_devclass, NULL, NULL);
+MODULE_DEPEND(cgem, miibus, 1, 1, 1);
+MODULE_DEPEND(cgem, ether, 1, 1, 1);
+
+```
+[root@centos7 rtems-libbsd-a64]# ls freebsd/sys/dev/
+bce  bge      dc   e1000  extres  ffec  gpio  led  mmc   ofw  re  rtwn   smc   usb
+bfe  cadence  dwc  evdev  fdt     fxp   kbd   mii  nvme  pci  rl  sdhci  tsec
+```
+
 ```
 ##  cgem_probe
 
@@ -362,4 +410,54 @@ Breakpoint 2, rtems_interrupt_server_handler_install (server_index=server_index@
 #17 0x001fa96a in _Thread_Start_multitasking () at ../../../cpukit/score/src/threadstartmultitasking.c:68
 #18 0x00000000 in ?? ()
 Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+```
+
+
+##  rtems_interrupt_server_request_initialize
+
+```
+(gdb) target remote:1234
+Remote debugging using :1234
+bsp_start_vector_table_end () at ../../../bsps/arm/shared/start/start.S:192
+192     ../../../bsps/arm/shared/start/start.S: No such file or directory.
+(gdb) c
+Continuing.
+
+Breakpoint 1, rtems_interrupt_server_request_initialize (server_index=0, 
+    request=0x4140a8 <_Linker_set__Per_CPU_Data_epoch+40>, handler=0x17aca5 <epoch_call_handler>, 
+    arg=0x414080 <_Linker_set__Per_CPU_Data_epoch>) at ../../../bsps/shared/irq/irq-server.c:861
+861     ../../../bsps/shared/irq/irq-server.c: No such file or directory.
+(gdb) bt
+#0  rtems_interrupt_server_request_initialize (server_index=0, 
+    request=0x4140a8 <_Linker_set__Per_CPU_Data_epoch+40>, handler=0x17aca5 <epoch_call_handler>, 
+    arg=0x414080 <_Linker_set__Per_CPU_Data_epoch>) at ../../../bsps/shared/irq/irq-server.c:861
+#1  0x00195ae4 in _bsd_mi_startup () at ../../freebsd/sys/kern/init_main.c:331
+#2  0x0017b396 in rtems_bsd_initialize () at ../../rtemsbsd/rtems/rtems-kernel-init.c:235
+#3  0x001047ca in Init (arg=<optimized out>) at ../../testsuite/include/rtems/bsd/test/default-network-init.h:239
+#4  0x001f95b4 in _Thread_Handler () at ../../../cpukit/score/src/threadhandler.c:145
+#5  0x001fa96a in _Thread_Start_multitasking () at ../../../cpukit/score/src/threadstartmultitasking.c:68
+#6  0x00000000 in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+(gdb) 
+```
+
+##  bsp_interrupt_server_install_helper
+```
+(gdb) c
+Continuing.
+
+Breakpoint 1, bsp_interrupt_server_install_helper (arg=0x4834c4)
+    at ../../../bsps/shared/irq/irq-server.c:154
+154     ../../../bsps/shared/irq/irq-server.c: No such file or directory.
+(gdb) bt
+#0  bsp_interrupt_server_install_helper (arg=0x4834c4)
+    at ../../../bsps/shared/irq/irq-server.c:154
+#1  0x001e9ff8 in bsp_interrupt_server_task (arg=4676060)
+    at ../../../bsps/shared/irq/irq-server.c:363
+#2  0x001f95b4 in _Thread_Handler () at ../../../cpukit/score/src/threadhandler.c:145
+#3  0x001f945e in _Thread_Do_dispatch (cpu_self=<optimized out>, level=<optimized out>)
+    at ../../../cpukit/score/src/threaddispatch.c:309
+#4  0x00000000 in ?? ()
+Backtrace stopped: previous frame identical to this frame (corrupt stack?)
+(gdb) 
 ```
