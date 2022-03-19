@@ -72,7 +72,7 @@ qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m
 qemu-system-arm: Invalid SMP CPUs 4. The max CPUs supported by machine 'xilinx-zynq-a9' is 1
 ```
 
-# arm/xilinx_zynq_a9_qemu
+# arm/realview_pbx_a9_qemu 
 
 ## build kernel
 
@@ -105,4 +105,4 @@ qemu-system-arm  -no-reboot -net none -nographic -smp 4 -icount auto -M realview
 ```
 
 
-[!images]
+![image]https://github.com/magnate3/rtems-app/tree/main/example/smp/pic/smp.png)
