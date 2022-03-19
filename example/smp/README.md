@@ -101,8 +101,9 @@ lib  make  Makefile.inc
 
 ## export 
 
-export PATH=$HOME/development/rtems/compiler_arm/6/bin:$PATH
-export RTEMS_MAKEFILE_PATH=$HOME/development/rtems/compiler_arm/6/arm-rtems6/realview_pbx_a9_qemu
+   export PATH=$HOME/development/rtems/compiler_arm/6/bin:$PATH
+
+   export RTEMS_MAKEFILE_PATH=$HOME/development/rtems/compiler_arm/6/arm-rtems6/realview_pbx_a9_qemu
 
 ## run
 
