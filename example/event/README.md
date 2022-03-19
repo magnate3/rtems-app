@@ -26,3 +26,15 @@ Quitting current task...
 Received Event Successfully...Quitting current task... 
 QEMU: Terminated
 ```
+
+
+#  rtems_event_send
+
+```
+		rtems_event_send(
+		waitingTask,
+		RTEMS_EVENT_1
+		);
+```
+
+*waitingTask is the id of receiver*
