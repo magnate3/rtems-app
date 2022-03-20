@@ -40,3 +40,12 @@
 
  ```
  
+ # run
+ 
+ ```
+ [root@centos7 message_queues_rtems]# qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M -smp 1    -kernel o-optimize/hello.exe
+0: Create the message queue 
+
+QEMU: Terminated
+ ```
+ 
