@@ -33,6 +33,7 @@ cp o-optimize/hello.exe o-optimize/hello.ralf
 
 # run
 
+
 ```
  [root@centos7 semaphore]# qemu-system-aarch64 -no-reboot -nographic -serial mon:stdio  -machine virt,gic-version=3 -cpu cortex-a53 -m 4096 -kernel o-optimize/hello.exe
 Creation of Semaphore failed...
@@ -45,3 +46,16 @@ RTEMS tools: 10.3.1 20210409 (RTEMS 6, RSB 889cf95db0122bd1a6b21598569620c40ff20
 executing thread ID: 0x08a010001
 executing thread name: EXAM
 ```
+
+
+#  rtems_semaphore_create
+```
+rtems_status_code rtems_semaphore_create(
+  rtems_name           name,
+  uint32_t             count,
+  rtems_attribute      attribute_set,
+  rtems_task_priority  priority_ceiling,
+  rtems_id            *id
+)
+```
+cpukit/rtems/src/semcreate.c
