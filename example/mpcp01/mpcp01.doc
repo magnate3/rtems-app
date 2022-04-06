@@ -1,0 +1,12 @@
+﻿This file describes the directives and concepts tested by this test set.
+
+test set name: overhead
+
+directives:
+
+  - MPCP functions (lock/unlock)
+
+concepts:
+
+  - Testing functionality of the MPCP implementation
+  - t_0 and t_2 obtain the semaphore in that order. t_2 gets suspended first.
