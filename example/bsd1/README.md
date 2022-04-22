@@ -2,6 +2,8 @@
 # make
 
 ## make bug
+
+```
 [root@centos7 event]# make
 Makefile:16: /make/leaf.cfg: No such file or directory
 make: *** No rule to make target '/make/leaf.cfg'.  Stop.
@@ -23,6 +25,7 @@ test_main.c:210:10: fatal error: rtems/bsd/test/default-network-init.h: No such 
 compilation terminated.
 make: *** [/root/development/rtems/compiler_arm/6/share/rtems6/make/compilers/gcc-target-default.cfg:100: o-optimize/test_main.o] Error 1
 [root@centos7 media01]#
+```
 
 
 ## reference  makefile
@@ -147,4 +150,4 @@ cp o-optimize/hello.exe o-optimize/hello.ralf
  qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel   o-optimize/hello.exe
 ```
 
-![Alt text](https://github.com/weiman152/StarsView/blob/master/ScreenShots/1.png)
+![Alt text](https://github.com/magnate3/rtems-app/blob/main/example/bsd1/pic/bsd1.png)
