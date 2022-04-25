@@ -1,5 +1,38 @@
+# build/arm-rtems6-xilinx_zynq_a9_qemu-default/netshell01.exe 
+ 
+ ```
+ [root@centos7 rtems-libbsd-a64]#  qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/netshell01.exe
+ ```
+```
+[root@centos7 rtems-libbsd-a64]#  qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel build/arm-rtems6-xilinx_zynq_a9_qemu-default/netshell01.exe 
+qemu-system-arm: warning: nic cadence_gem.1 has no peer
 
-# make
+
+*** BEGIN OF TEST LIBBSD NETSHELL 1 ***
+*** TEST VERSION: 6.0.0.671f126a3a8e6ce5da87aa75c7205fb764e95c78
+*** TEST STATE: USER_INPUT
+*** TEST BUILD: RTEMS_POSIX_API
+*** TEST TOOLS: 10.3.1 20210409 (RTEMS 6, RSB 889cf95db0122bd1a6b21598569620c40ff2069d, Newlib eb03ac1)
+nexus0: <RTEMS Nexus device>
+
+RTEMS Shell on /dev/console. Use 'help' to list commands.
+RTSH [/] # ls
+dev etc
+RTSH [/] # ip a         
+ip: command not found
+RTSH [/] # ls dev/
+bpf     bpf0    console null    ttyS0   ttyS1   zero
+RTSH [/] # ls etc/    
+group     issue     issue.net passwd
+RTSH [/] # 
+```
+
+## make
+```
+[root@centos7 event]# export PATH=$HOME/development/rtems/compiler_arm/6/bin:$PATH
+[root@centos7 event]# export RTEMS_MAKEFILE_PATH=$HOME/development/rtems/compiler_arm/6/arm-rtems6/xilinx_zynq_a9_qemu
+```
+
 
  ```
  [root@centos7 netshell01]# make
@@ -21,7 +54,7 @@ cp o-optimize/hello.exe o-optimize/hello.ralf
 [root@centos7 netshell01]# 
  ```
 
-# run
+## run
 
 ```
  qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel   o-optimize/hello.exe
@@ -94,3 +127,94 @@ executing thread name: UI1
 *** LIBBSD NETSHELL 1 TEST ***
 QEMU: Terminated
 ```
+
+* RTEMS_POSIX_API = True in config.ini *
+
+## run successfuly
+
+```
+[root@centos7 netshell01]# qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel   o-optimize/hello.exe
+qemu-system-arm: warning: nic cadence_gem.1 has no peer
+*** LIBBSD NETSHELL 1 TEST ***
+nexus0: <RTEMS Nexus device>
+zy7_slcr0: <Zynq-7000 slcr block> on nexus0
+arasan_sdhci0: <Zynq-7000 SDHCI> on nexus0
+arasan_sdhci1: <Zynq-7000 SDHCI> on nexus0
+cgem0: <Cadence CGEM Gigabit Ethernet Interface> on nexus0
+miibus0: <MII bus> on cgem0
+e1000phy0: <Marvell 88E1111 Gigabit PHY> PHY 0 on miibus0
+e1000phy0:  none, 10baseT, 10baseT-FDX, 100baseTX, 100baseTX-FDX, 1000baseT-FDX, 1000baseT-FDX-master, auto
+e1000phy1: <Marvell 88E1111 Gigabit PHY> PHY 23 on miibus0
+e1000phy1:  none, 10baseT, 10baseT-FDX, 100baseTX, 100baseTX-FDX, 1000baseT-FDX, 1000baseT-FDX-master, auto
+info: cgem0: Ethernet address: 0e:b0:ba:5e:ba:12
+info: lo0: link state changed to UP
+cgem0: cgem_mediachange: could not set ref clk0 to 25000000.
+info: cgem0: link state changed to UP
+add host 10.10.10.251: gateway cgem0
+add net default: gateway 10.10.10.251
+
+RTEMS Shell on /dev/console. Use 'help' to list commands.
+RTSH [/] # ip a
+ip: command not found
+RTSH [/] # ping 10.10.10.251
+PING 10.10.10.251 (10.10.10.251): 56 data bytes
+
+--- 10.10.10.251 ping statistics ---
+3 packets transmitted, 0 packets received, 100.0% packet loss
+RTSH [/] # 
+```
+
+
+#  add hello command
+
+*default-network-init.h*
+
+```
+ rtems_shell_add_cmd("hello","misc","Say hello RTEMS!",hello_command);
+```
+
+```
+[root@centos7 netshell01]#  qemu-system-arm -serial null -serial mon:stdio -nographic   -M xilinx-zynq-a9 -m 256M   -net tap,ifname=qtap,script=no,downscript=no   -net nic,model=cadence_gem,macaddr=0e:b0:ba:5e:ba:12   -kernel   o-optimize/hello.exe
+qemu-system-arm: warning: nic cadence_gem.1 has no peer
+*** LIBBSD NETSHELL 1 TEST ***
+nexus0: <RTEMS Nexus device>
+zy7_slcr0: <Zynq-7000 slcr block> on nexus0
+arasan_sdhci0: <Zynq-7000 SDHCI> on nexus0
+arasan_sdhci1: <Zynq-7000 SDHCI> on nexus0
+cgem0: <Cadence CGEM Gigabit Ethernet Interface> on nexus0
+miibus0: <MII bus> on cgem0
+e1000phy0: <Marvell 88E1111 Gigabit PHY> PHY 0 on miibus0
+e1000phy0:  none, 10baseT, 10baseT-FDX, 100baseTX, 100baseTX-FDX, 1000baseT-FDX, 1000baseT-FDX-master, auto
+e1000phy1: <Marvell 88E1111 Gigabit PHY> PHY 23 on miibus0
+e1000phy1:  none, 10baseT, 10baseT-FDX, 100baseTX, 100baseTX-FDX, 1000baseT-FDX, 1000baseT-FDX-master, auto
+info: cgem0: Ethernet address: 0e:b0:ba:5e:ba:12
+info: lo0: link state changed to UP
+cgem0: cgem_mediachange: could not set ref clk0 to 25000000.
+info: cgem0: link state changed to UP
+add host 10.10.10.251: gateway cgem0
+add net default: gateway 10.10.10.251
+
+RTEMS Shell on /dev/console. Use 'help' to list commands.
+RTSH [/] # hello
+Hello RTEMS!
+Create your own command here!
+RTSH [/] # 
+```
+
+# rtems-tools
+## rtems-tools version
+
+```
+[root@centos7 rtems-tools]# git branch
+* (detached from origin/5)
+  master
+[root@centos7 rtems-tools]# 
+```
+## make
+```
+[root@centos7 rtems-tools]# ./waf configure --prefix=$HOME/development/rtems/compiler_arm/6
+./waf build install
+
+```
+# reference
+https://github.com/alanc98/rki/tree/5c531e9b7e229a7c4bce0890116835d672526964

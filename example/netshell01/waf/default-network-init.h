@@ -49,7 +49,6 @@
 #include <rtems/bsd/bsd.h>
 #include <rtems/bsd/modules.h>
 #include <rtems/dhcpcd.h>
-
 #if defined(DEFAULT_NETWORK_DHCPCD_ENABLE) && \
     !defined(DEFAULT_NETWORK_NO_STATIC_IFCONFIG)
 #define DEFAULT_NETWORK_NO_STATIC_IFCONFIG
@@ -198,10 +197,11 @@ Init(rtems_task_argument arg)
 #ifdef DEFAULT_EARLY_INITIALIZATION
 	early_initialization();
 #endif
-
+        //rki_setup_filesystems();
+        //rtems_shell_add_cmd("hello","misc","Say hello RTEMS!",hello_command);
 	/* Let other tasks run to complete background work */
 	default_network_set_self_prio(RTEMS_MAXIMUM_PRIORITY - 1U);
-
+       
 #ifdef DEFAULT_NETWORK_SHELL
 	sc = rtems_shell_init(
 		"SHLL",
@@ -236,7 +236,7 @@ Init(rtems_task_argument arg)
 	default_network_route_hwif0(ifname);
 #endif
 	default_network_dhcpcd();
-
+        
 	iai_main();
 
 	assert(0);

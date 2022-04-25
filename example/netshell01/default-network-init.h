@@ -63,7 +63,7 @@
 #include <rtems/console.h>
 #include <rtems/shell.h>
 #endif
-
+int  hello_command( int argc, char *argv[]);
 static void
 default_network_set_self_prio(rtems_task_priority prio)
 {
@@ -235,7 +235,7 @@ Init(rtems_task_argument arg)
 	default_network_route_hwif0(ifname);
 #endif
 	default_network_dhcpcd();
-
+        rtems_shell_add_cmd("hello","misc","Say hello RTEMS!",hello_command); 
 	test_main();
 
 	assert(0);
