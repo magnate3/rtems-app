@@ -65,7 +65,11 @@ void bsp_fatal_extension(
 
   #if (BSP_PRINT_EXCEPTION_CONTEXT) || BSP_VERBOSE_FATAL_EXTENSION
     if ( source == RTEMS_FATAL_SOURCE_EXCEPTION ) {
-      rtems_exception_frame_print( (const rtems_exception_frame *) code );
+        rtems_exception_frame_print( (const rtems_exception_frame *) code );
+#ifdef  CONFIG_BACKTRACE 
+        printk( "executing backtrace dump\n" );
+        rtems_backtrace_dump();
+#endif
     }
   #endif
 
@@ -121,7 +125,6 @@ void bsp_fatal_extension(
         (uintmax_t) code
       );
     }
-
     printk(
       "RTEMS version: %s\n"
       "RTEMS tools: %s\n",
@@ -165,6 +168,4 @@ void bsp_fatal_extension(
   #if (BSP_PRESS_KEY_FOR_RESET) || (BSP_RESET_BOARD_AT_EXIT)
     bsp_reset();
   #endif
-  rtems_backtrace_dump();
-  show();
 }
