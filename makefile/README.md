@@ -463,5 +463,20 @@
             Template "directory" makefile.
 
 
-    
+# add    DEFINES
+
+```
+bspfatal-default.c
+#ifdef  CONFIG_BACKTRACE  
+//#if 1
+        printk( "executing backtrace dump\n" );
+        //rtems_backtrace_dump();
+        rtems_printer printer;
+        rtems_print_printer_printk(&printer);
+        __unwind_backtrace(&printer, (rtems_exception_frame *)code, NULL);
+#endif
+        rtems_exception_frame_print( (const rtems_exception_frame *) code );
+    }
+  #endif
+```
 
