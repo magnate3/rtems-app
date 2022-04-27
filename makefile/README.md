@@ -480,5 +480,5 @@ bspfatal-default.c
   #endif
 ```
 ## build/c4che/arm/xilinx_zynq_a9_qemu_cache.py
-![image]( https://github.com/magnate3/rtems-app/blob/main/makefile/pic/define.png)
+![image](https://github.com/magnate3/rtems-app/blob/main/makefile/pic/define.png)
 
